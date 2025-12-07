@@ -1,4 +1,4 @@
-package com.hyperativatechtest.dto.validation;
+package com.hyperativatechtest.dto.auth.validations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

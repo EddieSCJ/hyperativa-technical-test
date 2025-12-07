@@ -1,4 +1,4 @@
-package com.hyperativatechtest.dto.validation;
+package com.hyperativatechtest.dto.auth.validations;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  *   <li><strong>At least 8 characters:</strong> Passwords shorter than 8 characters have significantly lower entropy.
  *       Even with SHA-256 hashing, short passwords are vulnerable to:
  *       <ul>
- *         <li>Rainbow table attacks: Online databases (e.g., https://10015.io/tools/sha256-encrypt-decrypt)
+ *         <li>Rainbow table attacks: Online databases (e.g., <a href="https://10015.io/tools/sha256-encrypt-decrypt">Encryption & Decryption Playground</a>)
  *             contain pre-computed hashes for common short passwords, making them instantly crackable</li>
  *         <li>Dictionary attacks: Common words/patterns with fewer characters are trivial to crack</li>
  *       </ul>
