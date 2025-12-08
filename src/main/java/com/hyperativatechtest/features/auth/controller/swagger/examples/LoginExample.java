@@ -1,4 +1,4 @@
-package com.hyperativatechtest.controller.auth.swagger.examples;
+package com.hyperativatechtest.features.auth.controller.swagger.examples;
 
 public class LoginExample {
 

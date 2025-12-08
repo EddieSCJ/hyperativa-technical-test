@@ -1,8 +1,11 @@
-package com.hyperativatechtest.controller.auth;
+package com.hyperativatechtest.features.auth.controller;
 
-import com.hyperativatechtest.controller.auth.swagger.examples.*;
-import com.hyperativatechtest.dto.auth.AuthRequest;
-import com.hyperativatechtest.dto.auth.AuthResponse;
+import com.hyperativatechtest.features.auth.controller.swagger.examples.AuthErrorExample;
+import com.hyperativatechtest.features.auth.controller.swagger.examples.LoginExample;
+import com.hyperativatechtest.features.auth.controller.swagger.examples.RegisterExample;
+import com.hyperativatechtest.features.auth.dto.UserRegistrationRequest;
+import com.hyperativatechtest.features.auth.dto.AuthRequest;
+import com.hyperativatechtest.features.auth.dto.AuthResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -21,12 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface AuthControllerApi {
 
     @PostMapping("/register")
-    @Operation(summary = "Register a new user")
+    @Operation(summary = "Register a new user (ADMIN only)")
     @RequestBody(
         required = true,
         content = @Content(
             mediaType = "application/json",
-            schema = @Schema(implementation = AuthRequest.class),
+            schema = @Schema(implementation = UserRegistrationRequest.class),
             examples = @ExampleObject(value = RegisterExample.REQUEST)
         )
     )
@@ -60,7 +63,7 @@ public interface AuthControllerApi {
             )
         )
     })
-    ResponseEntity<AuthResponse> register(@Valid @RequestBody AuthRequest authRequest);
+    ResponseEntity<AuthResponse> register(@Valid @RequestBody UserRegistrationRequest userRegistrationRequest);
 
     @PostMapping("/login")
     @Operation(summary = "Login user and get JWT token")

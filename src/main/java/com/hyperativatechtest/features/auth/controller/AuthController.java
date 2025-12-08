@@ -1,10 +1,11 @@
-package com.hyperativatechtest.controller.auth;
+package com.hyperativatechtest.features.auth.controller;
 
-import com.hyperativatechtest.dto.auth.AuthRequest;
-import com.hyperativatechtest.dto.auth.AuthResponse;
-import com.hyperativatechtest.entity.User;
-import com.hyperativatechtest.security.JwtTokenProvider;
-import com.hyperativatechtest.service.UserService;
+import com.hyperativatechtest.features.auth.dto.UserRegistrationRequest;
+import com.hyperativatechtest.features.auth.dto.AuthRequest;
+import com.hyperativatechtest.features.auth.dto.AuthResponse;
+import com.hyperativatechtest.features.common.entity.User;
+import com.hyperativatechtest.features.common.security.JwtTokenProvider;
+import com.hyperativatechtest.features.auth.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +26,9 @@ public class AuthController implements AuthControllerApi {
     private final JwtTokenProvider tokenProvider;
 
     @Override
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody AuthRequest authRequest) {
-        log.debug("Registering new user: {}", authRequest.username());
-        User user = userService.registerUser(authRequest);
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody UserRegistrationRequest userRegistrationRequest) {
+        log.debug("Registering new user: {}", userRegistrationRequest.username());
+        User user = userService.registerUser(userRegistrationRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new AuthResponse(null, "Bearer", user.getUsername(), tokenProvider.getExpirationTime())
