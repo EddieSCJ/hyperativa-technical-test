@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: hyperativa-tech-test
+
+  profiles:
+    active: local
+
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:86400000} # 1 day in milliseconds
+
+encryption:
+  secret: ${ENCRYPTION_SECRET}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
