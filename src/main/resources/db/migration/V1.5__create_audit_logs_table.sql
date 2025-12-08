@@ -6,6 +6,10 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     entity_id VARCHAR(36),
     details VARCHAR(500),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_audit_logs_username FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+    CONSTRAINT fk_audit_logs_username FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE,
+    INDEX idx_audit_logs_username (username),
+    INDEX idx_audit_logs_action (action),
+    INDEX idx_audit_logs_created_at (created_at),
+    INDEX idx_audit_logs_entity_type (entity_type)
 );
 
