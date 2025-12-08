@@ -1,7 +1,6 @@
-package com.hyperativatechtest.filter;
+package com.hyperativatechtest.features.common.security;
 
-import com.hyperativatechtest.security.JwtTokenProvider;
-import com.hyperativatechtest.service.UserService;
+import com.hyperativatechtest.features.auth.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 

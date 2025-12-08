@@ -1,4 +1,4 @@
-package com.hyperativatechtest.security;
+package com.hyperativatechtest.features.common.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
