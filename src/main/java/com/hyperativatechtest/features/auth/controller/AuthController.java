@@ -16,6 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import static com.hyperativatechtest.features.auth.dto.AuthResponse.DEFAULT_AUTH_TYPE;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -31,7 +33,7 @@ public class AuthController implements AuthControllerApi {
         User user = userService.registerUser(userRegistrationRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                new AuthResponse(null, "Bearer", user.getUsername(), tokenProvider.getExpirationTime())
+                new AuthResponse(null, DEFAULT_AUTH_TYPE, user.getUsername(), tokenProvider.getExpirationTime())
         );
     }
 
