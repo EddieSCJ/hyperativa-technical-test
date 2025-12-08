@@ -71,12 +71,12 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
         if (password == null) {
-            throw new IllegalArgumentException("Password cannot be null");
+            return true; // @NotBlank annotation will handle it
         }
 
         boolean isValid = pattern.matcher(password).matches();
 
-        if (!isValid) {
+        if (!isValid && context != null) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
                     "Password must contain: at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character (!@#$%^&*)"
