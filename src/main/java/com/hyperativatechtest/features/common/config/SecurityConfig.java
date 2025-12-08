@@ -1,8 +1,8 @@
-package com.hyperativatechtest.config;
+package com.hyperativatechtest.features.common.config;
 
-import com.hyperativatechtest.filter.JwtAuthenticationFilter;
-import com.hyperativatechtest.security.JwtTokenProvider;
-import com.hyperativatechtest.service.UserService;
+import com.hyperativatechtest.features.common.security.JwtAuthenticationFilter;
+import com.hyperativatechtest.features.common.security.JwtTokenProvider;
+import com.hyperativatechtest.features.auth.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
