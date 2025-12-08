@@ -1,4 +1,4 @@
-package com.hyperativatechtest.dto.auth.validations;
+package com.hyperativatechtest.features.auth.dto.validations;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -47,9 +47,7 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
     @Override
-    public void initialize(StrongPassword constraintAnnotation) {
-        // No initialization needed
-    }
+    public void initialize(StrongPassword constraintAnnotation) {}
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
