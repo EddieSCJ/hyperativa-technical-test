@@ -4,16 +4,16 @@ public class LoginExample {
 
     public static final String REQUEST = """
         {
-            "username": "alice",
-            "password": "securePassword123"
+            "username": "admin",
+            "password": "Admin123!"
         }
         """;
 
     public static final String RESPONSE_200 = """
         {
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGljZSIsImlhdCI6MTczNTEwMDAwMCwiZXhwIjoxNzM1MTg2NDAwfQ.signature...",
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNTEwMDAwMCwiZXhwIjoxNzM1MTg2NDAwfQ.signature...",
             "type": "Bearer",
-            "username": "alice",
+            "username": "admin",
             "expiresIn": 86400000
         }
         """;
