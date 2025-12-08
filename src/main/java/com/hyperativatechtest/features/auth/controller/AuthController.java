@@ -28,9 +28,9 @@ public class AuthController implements AuthControllerApi {
     private final JwtTokenProvider tokenProvider;
 
     @Override
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody UserRegistrationRequest userRegistrationRequest) {
+    public ResponseEntity<AuthResponse> create(@Valid @RequestBody UserRegistrationRequest userRegistrationRequest) {
         log.debug("Registering new user: {}", userRegistrationRequest.username());
-        User user = userService.registerUser(userRegistrationRequest);
+        User user = userService.createUser(userRegistrationRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new AuthResponse(null, DEFAULT_AUTH_TYPE, user.getUsername(), tokenProvider.getExpirationTime())

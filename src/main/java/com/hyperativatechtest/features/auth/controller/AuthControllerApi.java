@@ -63,7 +63,7 @@ public interface AuthControllerApi {
             )
         )
     })
-    ResponseEntity<AuthResponse> register(@Valid @RequestBody UserRegistrationRequest userRegistrationRequest);
+    ResponseEntity<AuthResponse> create(@Valid @RequestBody UserRegistrationRequest userRegistrationRequest);
 
     @PostMapping("/login")
     @Operation(summary = "Login user and get JWT token")
