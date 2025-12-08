@@ -1,4 +1,4 @@
-package com.hyperativatechtest.dto.auth;
+package com.hyperativatechtest.features.auth.dto;
 
 public record AuthResponse(
     String token,

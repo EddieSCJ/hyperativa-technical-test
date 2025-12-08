@@ -1,6 +1,6 @@
-package com.hyperativatechtest.dto.auth;
+package com.hyperativatechtest.features.auth.dto;
 
-import com.hyperativatechtest.dto.auth.validations.StrongPassword;
+import com.hyperativatechtest.features.auth.dto.validations.StrongPassword;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 

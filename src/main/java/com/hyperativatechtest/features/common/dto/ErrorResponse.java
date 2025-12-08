@@ -1,4 +1,4 @@
-package com.hyperativatechtest.dto;
+package com.hyperativatechtest.features.common.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
