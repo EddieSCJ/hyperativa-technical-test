@@ -15,8 +15,12 @@ spring:
       ddl-auto: validate
     show-sql: false
 
+  flyway:
+    locations: classpath:db/migration,classpath:db/migration-local
+
 logging:
   level:
+    root: INFO
     com:
       hyperativatechtest: DEBUG
     org:
@@ -32,6 +36,7 @@ server:
 
 jwt:
   secret: mySecretKeyForJWTTokenGenerationMustBeAtLeast256BitsLong123456789
+  expiration: 86400000
 
 encryption:
   secret: AES256SecretKeyForCardEncryption!
