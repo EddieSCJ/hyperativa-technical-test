@@ -1,6 +1,7 @@
 package com.hyperativatechtest.features.common.config;
 
 import com.hyperativatechtest.features.card.exception.CardAlreadyExistsException;
+import com.hyperativatechtest.features.card.exception.CardFileUploadException;
 import com.hyperativatechtest.features.card.exception.CardNotFoundException;
 import com.hyperativatechtest.features.fileprocessing.exception.JobNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +60,14 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
     }
 
+    @ExceptionHandler(CardFileUploadException.class)
+    public ResponseEntity<ErrorResponse> handleCardFileUploadException(CardFileUploadException ex) {
+        log.error("Card file upload error: {}", ex.getMessage(), ex);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()));
+    }
+
     @ExceptionHandler(JobNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleJobNotFound(JobNotFoundException ex) {
         log.warn("Job not found: {}", ex.getMessage());
@@ -96,4 +105,6 @@ public class GlobalExceptionHandler {
 
     public record ErrorResponse(int status, String message) {}
 }
+
+
 
