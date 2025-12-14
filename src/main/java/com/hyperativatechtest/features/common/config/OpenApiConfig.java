@@ -8,9 +8,17 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.models.OpenAPI;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnProperty(
+        name = "springdoc.swagger-ui.enabled",
+        havingValue = "true",
+        matchIfMissing = true
+)
 @OpenAPIDefinition(
     info = @Info(
         title = "Card Management API",
@@ -39,5 +47,10 @@ import org.springframework.context.annotation.Configuration;
     in = SecuritySchemeIn.HEADER
 )
 public class OpenApiConfig {
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI();
+    }
 }
 

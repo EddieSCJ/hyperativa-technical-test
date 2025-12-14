@@ -3,6 +3,7 @@ package com.hyperativatechtest.features.common.config;
 import com.hyperativatechtest.features.common.security.JwtAuthenticationFilter;
 import com.hyperativatechtest.features.common.security.JwtTokenProvider;
 import com.hyperativatechtest.features.auth.service.UserService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
