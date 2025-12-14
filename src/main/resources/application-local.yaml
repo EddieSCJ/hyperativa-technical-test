@@ -1,22 +1,19 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:cardsdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: ""
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    url: jdbc:postgresql://localhost:5432/hyperativa
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
 
   jpa:
     hibernate:
       ddl-auto: validate
     show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   flyway:
     locations: classpath:db/migration,classpath:db/migration-local
+    baselineOnMigrate: true
 
   rabbitmq:
     host: localhost
@@ -37,6 +34,7 @@ logging:
     org:
       springframework:
         security: DEBUG
+      flywaydb: DEBUG
 
 springdoc:
   swagger-ui:
@@ -48,6 +46,14 @@ server:
 jwt:
   secret: mySecretKeyForJWTTokenGenerationMustBeAtLeast256BitsLong123456789
   expiration: 86400000
+
+aws:
+  s3:
+    endpoint: http://localhost:4566
+    region: us-east-1
+    access-key: test
+    secret-key: test
+    bucket-name: cards-bucket
 
 encryption:
   secret: AES256SecretKeyForCardEncryption!

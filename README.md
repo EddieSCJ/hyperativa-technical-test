@@ -1,42 +1,173 @@
-Desafio Hyperativa
-==================
+# Hyperativa Tech Test - Card Management API
 
-## Sobre o desafio
+A secure REST API for managing credit card information with JWT authentication, encrypted storage, and batch processing.
 
-### Criação de API para cadastro e consulta de número de cartão completo
+## Requirements
 
-Você precisa criar uma API com os seguintes requisitos:
+- Java 21
+- Docker
+- Git
 
-#### End-point para autenticação do usuário
+## Quick Start
 
-* O cliente deve realizar uma autenticação (JWT ou OAuth2) para realizar o uso da API.
+```bash
+# Clone the repository
+git clone <repository-url>
+cd hyperativa-tech-test
 
-#### End-point para inserção de dados
+# Make the setup script executable
+chmod +x setup.sh
 
-* O cliente poderá inserir os dados através de requisições informando um único cartão ou a partir de arquivo TXT a API.
-* Defina o contrato da API com os padrões a serem adotados para integração.
-* Escolha o banco de dados que achar melhor e a estrutura que achar mais adequada.
-* Por serem dados sensíveis toda informação deve ser armazenada de maneira segura no banco de dados.
+# Run the complete setup and start the application
+./setup.sh
+```
 
-#### End-point para consulta de dados
+The script will:
+1. Start Docker services (PostgreSQL, RabbitMQ, LocalStack)
+2. Build the project
+3. Run all tests
+4. Run Flyway migrations automatically on startup
+5. Start the application with local profile
 
-* O cliente consulta se determinado número de cartão completo existe na base de dados e retorna um identificador único do sistema;
+Application runs on: **http://localhost:8080**
 
-#### Requisitos Obrigatórios
+## Local Environment
 
-* Logar as requisições de uso da API e seus retornos.
-* Usar linguagem C# com Framework .NET ou Python com Flask ou Django;
+The local profile runs with:
+- PostgreSQL database
+- Automatic Flyway migrations (core + local development data)
+- RabbitMQ message queue
+- LocalStack for AWS S3 simulation
+- Swagger UI enabled
 
-#### Requisitos Opcionais (Não necessário)
+### Default Admin User (Local Only)
 
-* Ter uma cobertura de teste unitários relativamente boa.
-* Utilizar criptografia (end-to-end encryption) para tráfego de informações.
+A default admin user is created automatically for local development:
 
-## Orientações
-* Procure fazer uma API sucinta. 
-* O arquivo TXT com o formato que o cliente irá enviar estão no repositório.
-* Pensar em escalabilidade, pode ser uma quantidade muito grande de dados.
-* Coloque isso em um repositório GIT.
-* Colocar as orientações de setup e uso no README do seu repositório.
+```
+Username: admin
+Password: Admin123!
+```
 
-# Boa sorte 
+Use this to test the API immediately after startup.
+
+## Ports
+
+- Application: 8080
+- PostgreSQL: 5432
+- RabbitMQ: 5672
+- LocalStack: 4566
+
+## API Usage
+
+### Swagger Documentation
+
+Once the application is running, access the interactive API documentation:
+
+```
+Swagger UI: http://localhost:8080/swagger-ui.html
+OpenAPI Spec: http://localhost:8080/v3/api-docs
+```
+
+You can test all endpoints directly from the Swagger UI interface.
+
+### Login with Default Admin
+
+```bash
+curl -X POST http://localhost:8080/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"Admin123!"}'
+```
+
+### Register User
+```bash
+curl -X POST http://localhost:8080/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"user1","password":"Pass123!","roleName":"USER"}'
+```
+
+### Login
+```bash
+curl -X POST http://localhost:8080/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"user1","password":"Pass123!"}'
+```
+
+### Create Card
+```bash
+TOKEN="<jwt-token>"
+curl -X POST http://localhost:8080/api/cards \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"cardNumber":"4456897999999999"}'
+```
+
+### Lookup Card
+```bash
+TOKEN="<jwt-token>"
+curl -X POST http://localhost:8080/api/cards/lookup \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"cardNumber":"4456897999999999"}'
+```
+
+## Running Tests
+
+```bash
+# All tests
+./gradlew test
+
+# Specific test
+./gradlew test --tests CardControllerTest
+
+# View test report
+open build/reports/tests/test/index.html
+```
+
+## Manual Setup (if not using setup.sh)
+
+```bash
+# Start services
+docker-compose up -d
+
+# Build project
+./gradlew clean build
+
+# Run application with local profile (includes migrations)
+./gradlew bootRun --args='--spring.profiles.active=local'
+```
+
+## Stop Services
+
+```bash
+# Stop application (Ctrl+C in terminal)
+
+# Stop Docker services
+docker-compose down
+```
+
+## Troubleshooting
+
+**Port 8080 already in use:**
+```bash
+lsof -i :8080
+kill -9 <PID>
+```
+
+**Docker services not starting:**
+```bash
+docker-compose restart
+```
+
+**Build errors:**
+```bash
+./gradlew clean --refresh-dependencies build
+```
+
+**Migration failures:**
+Check PostgreSQL is running and accessible:
+```bash
+docker-compose ps
+docker logs <postgres-container>
+```
+
