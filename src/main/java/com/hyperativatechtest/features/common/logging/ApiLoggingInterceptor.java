@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -40,14 +41,14 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                Object handler, Exception ex) {
         Long startTime = (Long) request.getAttribute(AuditConstants.REQUEST_START_TIME_ATTR);
-        long duration = startTime != null ? System.currentTimeMillis() - startTime : 0;
+        long duration = Objects.nonNull(startTime) ? System.currentTimeMillis() - startTime : 0;
 
         String username = getUsername();
         String action = buildAction(request);
         int status = response.getStatus();
 
         String details = String.format("Status: %d, Duration: %dms", status, duration);
-        if (ex != null) {
+        if (Objects.nonNull(ex)) {
             details += ", Error: " + ex.getMessage();
         }
 
@@ -83,7 +84,7 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
     private String getUsername() {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth != null && auth.isAuthenticated() &&
+            if (Objects.nonNull(auth) && auth.isAuthenticated() &&
                 !AuditConstants.SECURITY_PRINCIPAL_ANONYMOUS.equals(auth.getPrincipal())) {
                 return auth.getName();
             }
@@ -94,7 +95,7 @@ public class ApiLoggingInterceptor implements HandlerInterceptor {
     }
 
     private String maskSensitiveData(String data) {
-        if (data == null) {
+        if (Objects.isNull(data)) {
             return null;
         }
 
