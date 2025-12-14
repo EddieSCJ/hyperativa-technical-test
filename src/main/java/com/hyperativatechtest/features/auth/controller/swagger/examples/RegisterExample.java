@@ -4,14 +4,15 @@ public class RegisterExample {
 
     public static final String REQUEST = """
         {
-            "username": "admin",
-            "password": "Admin123!"
+            "username": "user1",
+            "password": "Password123!",
+            "roleName": "USER"
         }
         """;
 
     public static final String RESPONSE_201 = """
         {
-            "username": "admin",
+            "username": "user1",
             "type": "Bearer",
             "expiresIn": 86400000
         }

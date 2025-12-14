@@ -1,12 +1,10 @@
 package com.hyperativatechtest.features.common.config;
 
+import com.hyperativatechtest.features.auth.service.UserService;
 import com.hyperativatechtest.features.common.security.JwtAuthenticationFilter;
 import com.hyperativatechtest.features.common.security.JwtTokenProvider;
-import com.hyperativatechtest.features.auth.service.UserService;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -59,8 +57,8 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-config/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/cards/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/cards/**").authenticated()
+                .requestMatchers("/api/cards/**").authenticated()
+                .requestMatchers("/api/batch-cards/**").authenticated()
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))

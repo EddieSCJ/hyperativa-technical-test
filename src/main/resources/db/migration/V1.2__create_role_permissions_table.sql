@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS role_permissions (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id BIGSERIAL PRIMARY KEY,
     role_id BIGINT NOT NULL,
     permission VARCHAR(50) NOT NULL,
     CONSTRAINT fk_role_permissions_role_id FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,

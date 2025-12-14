@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS audit_logs (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id BIGSERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     action VARCHAR(100) NOT NULL,
     entity_type VARCHAR(50),

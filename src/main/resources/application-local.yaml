@@ -5,22 +5,31 @@ spring:
     username: postgres
     password: postgres
 
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    show-sql: false
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-
   flyway:
     locations: classpath:db/migration,classpath:db/migration-local
     baselineOnMigrate: true
     enabled: true
+    outOfOrder: false
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    defer-datasource-initialization: false
 
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
+
+  batch:
+    job:
+      enabled: true
+    jdbc:
+      initialize-database: always
+    take-name: BATCH
 
   servlet:
     multipart:

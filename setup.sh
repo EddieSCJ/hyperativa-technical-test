@@ -19,11 +19,12 @@ command -v git >/dev/null 2>&1 || { echo "Git is required but not installed."; e
 echo "✓ All prerequisites found"
 echo ""
 
-# Step 1: Stop existing containers
-echo "Step 1: Cleaning up existing containers..."
-docker-compose down 2>/dev/null || true
+# Step 1: Stop existing containers and remove volumes
+echo "Step 1: Cleaning up existing containers, databases, and volumes..."
+docker-compose down -v 2>/dev/null || true
 sleep 2
-echo "✓ Done"
+echo "✓ Containers stopped"
+echo "✓ Volumes deleted"
 echo ""
 
 # Step 2: Start services
