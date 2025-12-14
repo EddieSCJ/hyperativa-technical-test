@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS role_permissions (
     role_id BIGINT NOT NULL,
     permission VARCHAR(50) NOT NULL,
     CONSTRAINT fk_role_permissions_role_id FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
-    UNIQUE KEY uk_role_permission (role_id, permission),
-    INDEX idx_role_permissions_role_id (role_id)
+    CONSTRAINT uk_role_permission UNIQUE (role_id, permission)
 );
+
+CREATE INDEX IF NOT EXISTS idx_role_permissions_role_id ON role_permissions(role_id);
 

@@ -9,10 +9,11 @@ CREATE TABLE IF NOT EXISTS users (
     credentials_non_expired BOOLEAN NOT NULL DEFAULT true,
     account_non_expired BOOLEAN NOT NULL DEFAULT true,
     locked_until TIMESTAMP,
-    CONSTRAINT fk_users_role_id FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE RESTRICT,
-    INDEX idx_users_username (username),
-    INDEX idx_users_enabled (enabled),
-    INDEX idx_users_account_non_locked (account_non_locked),
-    INDEX idx_users_role_id (role_id)
+    CONSTRAINT fk_users_role_id FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE RESTRICT
 );
+
+CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
+CREATE INDEX IF NOT EXISTS idx_users_enabled ON users(enabled);
+CREATE INDEX IF NOT EXISTS idx_users_account_non_locked ON users(account_non_locked);
+CREATE INDEX IF NOT EXISTS idx_users_role_id ON users(role_id);
 
