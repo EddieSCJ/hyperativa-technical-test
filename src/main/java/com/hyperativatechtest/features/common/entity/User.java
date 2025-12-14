@@ -3,8 +3,8 @@ package com.hyperativatechtest.features.common.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -62,10 +63,10 @@ public class User implements UserDetails {
     @PrePersist
     protected void onCreate() {
         createdAt = OffsetDateTime.now();
-        if (enabled == null) enabled = true;
-        if (accountNonLocked == null) accountNonLocked = true;
-        if (credentialsNonExpired == null) credentialsNonExpired = true;
-        if (accountNonExpired == null) accountNonExpired = true;
+        if (Objects.isNull(enabled)) enabled = true;
+        if (Objects.isNull(accountNonLocked)) accountNonLocked = true;
+        if (Objects.isNull(credentialsNonExpired)) credentialsNonExpired = true;
+        if (Objects.isNull(accountNonExpired)) accountNonExpired = true;
     }
 
     @Override
@@ -74,31 +75,31 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return accountNonExpired != null && accountNonExpired;
-    }
-
-    @Override
     public boolean isAccountNonLocked() {
-        if (accountNonLocked == null || !accountNonLocked) {
+        if (Objects.isNull(accountNonLocked) || !accountNonLocked) {
             return false;
         }
 
-        if (lockedUntil == null) {
+        if (Objects.isNull(lockedUntil)) {
             return true;
         }
 
-        return lockedUntil.isBefore(OffsetDateTime.now());
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return Objects.nonNull(accountNonExpired) && accountNonExpired;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired != null && credentialsNonExpired;
+        return Objects.nonNull(credentialsNonExpired) && credentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return enabled != null && enabled;
+        return Objects.nonNull(enabled) && enabled;
     }
 }
 
