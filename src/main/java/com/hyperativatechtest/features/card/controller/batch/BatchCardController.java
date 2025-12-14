@@ -1,5 +1,6 @@
 package com.hyperativatechtest.features.card.controller.batch;
 
+import com.hyperativatechtest.features.card.constant.CardBatchMessages;
 import com.hyperativatechtest.features.card.dto.batch.FileUploadResponse;
 import com.hyperativatechtest.features.card.dto.batch.JobStatusResponse;
 import com.hyperativatechtest.features.card.mapper.JobStatusMapper;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 import static java.util.Objects.nonNull;
 
 @RestController
@@ -29,14 +28,14 @@ public class BatchCardController implements BatchCardControllerApi {
 
     @Override
     public ResponseEntity<FileUploadResponse> uploadCardsBatch(
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam("file") MultipartFile file) {
 
         log.debug("Received batch cards file upload: {}", file.getOriginalFilename());
 
         if (file.isEmpty()) {
             return ResponseEntity.badRequest()
                     .body(FileUploadResponse.builder()
-                            .message("File is empty")
+                            .message(CardBatchMessages.FILE_IS_EMPTY)
                             .build());
         }
 
@@ -64,7 +63,7 @@ public class BatchCardController implements BatchCardControllerApi {
         if (filename == null || !filename.toLowerCase().endsWith(".txt")) {
             return ResponseEntity.badRequest()
                     .body(FileUploadResponse.builder()
-                            .message("Only TXT files are allowed")
+                            .message(CardBatchMessages.ONLY_TXT_FILES_ALLOWED)
                             .build());
         }
         return null;
