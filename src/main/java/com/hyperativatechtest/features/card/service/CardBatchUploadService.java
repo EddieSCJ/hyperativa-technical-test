@@ -40,7 +40,7 @@ public class CardBatchUploadService {
 
             return FileUploadResponse.builder()
                     .jobId(jobId)
-                    .status(CardJobStatusEnum.PENDING.getValue())
+                    .status(CardJobStatusEnum.PENDING.name())
                     .message(CardBatchMessages.FILE_UPLOADED_SUCCESSFULLY)
                     .build();
         } catch (Exception e) {

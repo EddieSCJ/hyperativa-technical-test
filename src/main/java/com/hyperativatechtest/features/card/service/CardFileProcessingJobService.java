@@ -23,7 +23,7 @@ public class CardFileProcessingJobService implements FileProcessingJobService {
         log.info("Creating card file processing job for file: {}", fileName);
 
         CardFileProcessingJob job = CardFileProcessingJob.builder()
-                .status(CardJobStatusEnum.PENDING.getValue())
+                .status(CardJobStatusEnum.PENDING.name())
                 .s3Key(s3Key)
                 .fileName(fileName)
                 .username(username)
