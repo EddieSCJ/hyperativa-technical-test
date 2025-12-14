@@ -1,6 +1,9 @@
 package com.hyperativatechtest.features.card.controller.simple;
 
-import com.hyperativatechtest.features.card.dto.*;
+import com.hyperativatechtest.features.card.dto.simple.CardLookupRequest;
+import com.hyperativatechtest.features.card.dto.simple.CardLookupResponse;
+import com.hyperativatechtest.features.card.dto.simple.CardRequest;
+import com.hyperativatechtest.features.card.dto.simple.CardResponse;
 import com.hyperativatechtest.features.card.service.CardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

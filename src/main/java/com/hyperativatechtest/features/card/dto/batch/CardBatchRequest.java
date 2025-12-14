@@ -1,4 +1,4 @@
-package com.hyperativatechtest.features.card.dto;
+package com.hyperativatechtest.features.card.dto.batch;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

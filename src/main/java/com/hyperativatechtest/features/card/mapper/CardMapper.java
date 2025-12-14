@@ -1,7 +1,7 @@
 package com.hyperativatechtest.features.card.mapper;
 
-import com.hyperativatechtest.features.card.dto.CardResponse;
-import com.hyperativatechtest.features.card.dto.CardLookupResponse;
+import com.hyperativatechtest.features.card.dto.simple.CardLookupResponse;
+import com.hyperativatechtest.features.card.dto.simple.CardResponse;
 import com.hyperativatechtest.features.card.entity.Card;
 import com.hyperativatechtest.features.common.crypto.EncryptionService;
 import lombok.RequiredArgsConstructor;

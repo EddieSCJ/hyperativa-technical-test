@@ -2,10 +2,10 @@ package com.hyperativatechtest.features.card.controller.simple;
 
 import com.hyperativatechtest.features.card.controller.simple.swagger.examples.CreateCardExample;
 import com.hyperativatechtest.features.card.controller.simple.swagger.examples.LookupCardExample;
-import com.hyperativatechtest.features.card.dto.CardRequest;
-import com.hyperativatechtest.features.card.dto.CardResponse;
-import com.hyperativatechtest.features.card.dto.CardLookupRequest;
-import com.hyperativatechtest.features.card.dto.CardLookupResponse;
+import com.hyperativatechtest.features.card.dto.simple.CardLookupRequest;
+import com.hyperativatechtest.features.card.dto.simple.CardLookupResponse;
+import com.hyperativatechtest.features.card.dto.simple.CardRequest;
+import com.hyperativatechtest.features.card.dto.simple.CardResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;

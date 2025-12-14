@@ -1,4 +1,4 @@
-package com.hyperativatechtest.features.card.dto;
+package com.hyperativatechtest.features.card.dto.simple;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
