@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: hyperativa-postgres
+    environment:
+      POSTGRES_DB: cardsdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  localstack:
+    image: localstack/localstack:3.0
+    container_name: hyperativa-localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,dynamodb
+      - DEBUG=1
+      - PERSISTENCE=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - localstack_data:/var/lib/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./scripts/localstack-init.sh:/etc/localstack/init/ready.d/init-aws.sh
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: hyperativa-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./scripts/rabbitmq-init.sh:/docker-entrypoint-init.d/rabbitmq-init.sh
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  localstack_data:
+  rabbitmq_data:
+
