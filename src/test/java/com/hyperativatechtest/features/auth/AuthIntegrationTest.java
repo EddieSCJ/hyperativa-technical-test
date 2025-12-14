@@ -23,10 +23,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -44,6 +45,37 @@ class AuthIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @BeforeEach
+    void setUp() {
+        userRepository.deleteAll();
+
+        if (roleRepository.findByName("USER").isEmpty()) {
+            com.hyperativatechtest.features.common.entity.Role userRole = new com.hyperativatechtest.features.common.entity.Role();
+            userRole.setName("USER");
+            userRole.setDescription("Regular user with standard permissions");
+            userRole.setEnabled(true);
+            roleRepository.save(userRole);
+        }
+
+        if (roleRepository.findByName("ADMIN").isEmpty()) {
+            com.hyperativatechtest.features.common.entity.Role adminRole = new com.hyperativatechtest.features.common.entity.Role();
+            adminRole.setName("ADMIN");
+            adminRole.setDescription("Administrator with full system access");
+            adminRole.setEnabled(true);
+            roleRepository.save(adminRole);
+        }
+    }
+
+    @Test
+    @DisplayName("Should verify roles exist before tests")
+    void testRolesExist() {
+        assertTrue(roleRepository.findByName("USER").isPresent(), "USER role should exist");
+        assertTrue(roleRepository.findByName("ADMIN").isPresent(), "ADMIN role should exist");
+    }
 
     @Nested
     @DisplayName("User Registration and Login Flow")

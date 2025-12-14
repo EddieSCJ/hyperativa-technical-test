@@ -14,6 +14,15 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+      generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 1000
+          fetch_size: 50
+        order_inserts: true
+        order_updates: true
 
 jwt:
   secret: ${JWT_SECRET}

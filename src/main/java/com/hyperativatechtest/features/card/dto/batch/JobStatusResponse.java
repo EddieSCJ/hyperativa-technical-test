@@ -14,6 +14,7 @@ public class JobStatusResponse implements JobStatus {
     private String jobId;
     private String status;
     private String fileName;
+    private String s3Key;
     private String lotId;
     private Integer totalRecords;
     private Integer processedRecords;
@@ -25,7 +26,7 @@ public class JobStatusResponse implements JobStatus {
 
     @Override
     public String getId() {
-        return this.getJobId();
+        return jobId;
     }
 }
 

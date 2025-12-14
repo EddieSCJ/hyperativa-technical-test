@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS cards (
-    id VARCHAR(36) PRIMARY KEY,
+    id UUID PRIMARY KEY,
     encrypted_card_number TEXT NOT NULL,
     card_hash VARCHAR(64) NOT NULL UNIQUE,
     lot_id VARCHAR(50),

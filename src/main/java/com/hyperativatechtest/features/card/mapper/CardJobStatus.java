@@ -46,6 +46,7 @@ public class CardJobStatus implements JobStatus {
         return job.getErrorMessage();
     }
 
+    @Override
     public String getS3Key() {
         return job.getS3Key();
     }

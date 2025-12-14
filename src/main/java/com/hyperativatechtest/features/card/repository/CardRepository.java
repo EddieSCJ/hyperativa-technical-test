@@ -13,4 +13,3 @@ public interface CardRepository extends JpaRepository<Card, String> {
 
     boolean existsByCardHash(String cardHash);
 }
-

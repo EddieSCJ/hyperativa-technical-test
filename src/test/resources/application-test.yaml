@@ -7,7 +7,7 @@ spring:
       - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
 
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL;TRACE_LEVEL_SYSTEM_OUT=0
     driver-class-name: org.h2.Driver
     username: sa
     password: ""
@@ -17,9 +17,19 @@ spring:
       enabled: false
 
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        jdbc:
+          batch_size: 20
+          fetch_size: 50
+        order_inserts: true
+        order_updates: true
+        use_sql_comments: true
 
   flyway:
     locations: classpath:db/migration,classpath:db/migration-local

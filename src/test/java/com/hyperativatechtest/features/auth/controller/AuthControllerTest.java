@@ -22,11 +22,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,12 +50,11 @@ class AuthControllerTest {
     @MockBean
     private JwtTokenProvider tokenProvider;
 
-    private Role testRole;
     private User testUser;
 
     @BeforeEach
     void setUp() {
-        testRole = Role.builder()
+        Role testRole = Role.builder()
                 .id(1L)
                 .name(RoleType.USER.getName())
                 .enabled(true)
