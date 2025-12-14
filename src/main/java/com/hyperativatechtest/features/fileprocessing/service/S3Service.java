@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -17,7 +16,6 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -49,7 +47,7 @@ public class S3Service {
                 .build();
 
         s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
-        log.info("File uploaded to S3 with key: {}", key);
+        log.debug("File uploaded to S3 with key: {}", key);
 
         return key;
     }
@@ -90,27 +88,8 @@ public class S3Service {
             throw new RuntimeException("Failed to read file from S3", e);
         }
 
-        log.info("Downloaded file from S3 with {} lines", lines.size());
+        log.debug("Downloaded file from S3 with {} lines", lines.size());
         return lines;
-    }
-
-    public InputStream downloadFileAsStream(String s3Key) {
-        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                .bucket(bucketName)
-                .key(s3Key)
-                .build();
-
-        return s3Client.getObject(getObjectRequest);
-    }
-
-    public void deleteFile(String s3Key) {
-        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                .bucket(bucketName)
-                .key(s3Key)
-                .build();
-
-        s3Client.deleteObject(deleteObjectRequest);
-        log.info("File deleted from S3: {}", s3Key);
     }
 
     private String generateS3Key(String originalFilename) {
