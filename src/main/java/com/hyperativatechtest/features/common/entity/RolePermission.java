@@ -1,17 +1,16 @@
 package com.hyperativatechtest.features.common.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Table(name = "role_permissions")
-@Data
+@Getter
+@Setter
 @Builder
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "role_permissions")
 public class RolePermission {
 
     @Id

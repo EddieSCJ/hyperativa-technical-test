@@ -1,16 +1,15 @@
 package com.hyperativatechtest.features.common.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(of = "id")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,13 +32,4 @@ public class Role {
     @OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<RolePermission> permissions = new HashSet<>();
-
-    public boolean hasPermission(String permission) {
-        return permissions.stream()
-                .anyMatch(rp -> rp.getPermission().equals(permission));
-    }
-
-    public boolean hasPermission(Permission permission) {
-        return hasPermission(permission.getCode());
-    }
 }
