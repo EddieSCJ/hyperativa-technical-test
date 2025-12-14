@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -13,7 +14,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class CardResponse {
 
-    private String id;
+    private UUID id;
     private String maskedCardNumber;
     private OffsetDateTime createdAt;
 }
