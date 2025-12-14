@@ -7,13 +7,14 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
     show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   flyway:
     locations: classpath:db/migration,classpath:db/migration-local
     baselineOnMigrate: true
+    enabled: true
 
   rabbitmq:
     host: localhost
@@ -47,14 +48,6 @@ jwt:
   secret: mySecretKeyForJWTTokenGenerationMustBeAtLeast256BitsLong123456789
   expiration: 86400000
 
-aws:
-  s3:
-    endpoint: http://localhost:4566
-    region: us-east-1
-    access-key: test
-    secret-key: test
-    bucket-name: cards-bucket
-
 encryption:
   secret: AES256SecretKeyForCardEncryption!
 
@@ -64,6 +57,7 @@ aws:
   access-key: test
   secret-key: test
   s3:
+    endpoint: http://localhost:4566
     bucket: card-files-bucket
     presigned-url-expiration: 3600
 

@@ -5,7 +5,7 @@ services:
     image: postgres:15-alpine
     container_name: hyperativa-postgres
     environment:
-      POSTGRES_DB: cardsdb
+      POSTGRES_DB: hyperativa
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:

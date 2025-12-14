@@ -37,6 +37,7 @@ echo ""
 # Wait for services
 echo "Waiting for services to be ready (30 seconds)..."
 sleep 30
+echo "✓ PostgreSQL database 'hyperativa' created"
 echo "✓ Services ready"
 echo ""
 
