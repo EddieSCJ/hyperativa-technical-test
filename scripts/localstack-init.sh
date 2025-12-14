@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 echo "Initializing LocalStack resources..."
 
 # Wait for LocalStack to be ready
@@ -27,4 +25,3 @@ echo ""
 echo "============================================"
 echo "✓ LocalStack initialization complete!"
 echo "============================================"
-
