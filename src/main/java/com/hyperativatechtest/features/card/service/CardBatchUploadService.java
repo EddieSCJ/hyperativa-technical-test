@@ -3,7 +3,7 @@ package com.hyperativatechtest.features.card.service;
 import com.hyperativatechtest.features.card.constant.CardBatchMessages;
 import com.hyperativatechtest.features.card.dto.batch.FileUploadResponse;
 import com.hyperativatechtest.features.card.exception.CardFileUploadException;
-import com.hyperativatechtest.features.card.model.CardProcessingJobStatus;
+import com.hyperativatechtest.features.card.model.CardJobStatusEnum;
 import com.hyperativatechtest.features.common.config.rabbitmq.Exchanges;
 import com.hyperativatechtest.features.common.config.rabbitmq.RoutingKeys;
 import com.hyperativatechtest.features.common.service.MessagePublisherService;
@@ -40,7 +40,7 @@ public class CardBatchUploadService {
 
             return FileUploadResponse.builder()
                     .jobId(jobId)
-                    .status(CardProcessingJobStatus.PENDING.getValue())
+                    .status(CardJobStatusEnum.PENDING.getValue())
                     .message(CardBatchMessages.FILE_UPLOADED_SUCCESSFULLY)
                     .build();
         } catch (Exception e) {

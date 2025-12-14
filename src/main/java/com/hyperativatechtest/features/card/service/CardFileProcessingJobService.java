@@ -2,7 +2,7 @@ package com.hyperativatechtest.features.card.service;
 
 import com.hyperativatechtest.features.card.mapper.CardJobStatus;
 import com.hyperativatechtest.features.card.model.CardFileProcessingJob;
-import com.hyperativatechtest.features.card.model.CardProcessingJobStatus;
+import com.hyperativatechtest.features.card.model.CardJobStatusEnum;
 import com.hyperativatechtest.features.fileprocessing.service.FileProcessingJobService;
 import com.hyperativatechtest.features.fileprocessing.service.JobStatus;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class CardFileProcessingJobService implements FileProcessingJobService {
         log.info("Creating card file processing job for file: {}", fileName);
 
         CardFileProcessingJob job = CardFileProcessingJob.builder()
-                .status(CardProcessingJobStatus.PENDING.getValue())
+                .status(CardJobStatusEnum.PENDING.getValue())
                 .s3Key(s3Key)
                 .fileName(fileName)
                 .username(username)
