@@ -2,7 +2,7 @@ package com.hyperativatechtest.features.card.mapper;
 
 import com.hyperativatechtest.features.card.dto.batch.JobStatusResponse;
 import com.hyperativatechtest.features.card.service.CardDownloadService;
-import com.hyperativatechtest.features.fileprocessing.service.FileProcessingJobService;
+import com.hyperativatechtest.features.fileprocessing.service.JobStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ public class JobStatusMapper {
 
     private final CardDownloadService cardDownloadService;
 
-    public JobStatusResponse toJobStatusResponse(FileProcessingJobService.JobStatus jobStatus) {
+    public JobStatusResponse toJobStatusResponse(JobStatus jobStatus) {
         String presignedUrl = null;
 
         if (jobStatus instanceof CardJobStatus cardJobStatus) {
