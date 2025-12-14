@@ -122,7 +122,6 @@ class AuthControllerTest {
         @Test
         @DisplayName("Should reject invalid request (malformed JSON)")
         void testRegisterMalformedJson() throws Exception {
-            // Act & Assert
             mockMvc.perform(post("/auth/register")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content("{invalid json}"))
@@ -134,10 +133,8 @@ class AuthControllerTest {
         @Test
         @DisplayName("Should reject request with missing required fields")
         void testRegisterMissingFields() throws Exception {
-            // Arrange - missing roleName
             String requestBody = "{\"username\":\"testuser\",\"password\":\"SecurePass123!\"}";
 
-            // Act & Assert
             mockMvc.perform(post("/auth/register")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(requestBody))

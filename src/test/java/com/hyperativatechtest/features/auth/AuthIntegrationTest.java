@@ -1,6 +1,8 @@
 package com.hyperativatechtest.features.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hyperativatechtest.config.TestAwsConfig;
+import com.hyperativatechtest.config.TestRabbitMqConfig;
 import com.hyperativatechtest.features.auth.dto.AuthRequest;
 import com.hyperativatechtest.features.auth.dto.AuthResponse;
 import com.hyperativatechtest.features.auth.dto.UserRegistrationRequest;
@@ -14,7 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -25,6 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Import({TestRabbitMqConfig.class, TestAwsConfig.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @DisplayName("Auth Integration Tests")
 class AuthIntegrationTest {
 
@@ -37,12 +45,6 @@ class AuthIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @BeforeEach
-    void setUp() {}
-
     @Nested
     @DisplayName("User Registration and Login Flow")
     class RegistrationAndLoginFlow {
@@ -50,7 +52,6 @@ class AuthIntegrationTest {
         @Test
         @DisplayName("Should successfully register a user and then login with correct credentials")
         void testCompleteAuthenticationFlow() throws Exception {
-            // Step 1: Register a new user
             UserRegistrationRequest registrationRequest = new UserRegistrationRequest(
                     "integrationtestuser",
                     "SecurePassword123!",
@@ -62,13 +63,11 @@ class AuthIntegrationTest {
                     .content(objectMapper.writeValueAsString(registrationRequest)))
                     .andExpect(status().isCreated());
 
-            // Verify user was created in the database
             User registeredUser = userRepository.findByUsername("integrationtestuser").orElse(null);
             assertNotNull(registeredUser, "User should be created in the database");
             assertEquals("integrationtestuser", registeredUser.getUsername());
             assertTrue(registeredUser.isEnabled());
 
-            // Step 2: Login with the registered user
             AuthRequest loginRequest = new AuthRequest(
                     "integrationtestuser",
                     "SecurePassword123!"
@@ -81,18 +80,16 @@ class AuthIntegrationTest {
                     .andExpect(jsonPath("$.token", notNullValue()))
                     .andReturn();
 
-            // Extract the token from login response
             String loginResponseContent = loginResult.getResponse().getContentAsString();
             AuthResponse authResponse = objectMapper.readValue(loginResponseContent, AuthResponse.class);
 
             assertNotNull(authResponse.token(), "JWT token should be present in login response");
-            assertTrue(authResponse.token().length() > 0, "JWT token should not be empty");
+            assertFalse(authResponse.token().isEmpty(), "JWT token should not be empty");
         }
 
         @Test
         @DisplayName("Should fail login with incorrect password")
         void testLoginWithIncorrectPassword() throws Exception {
-            // Register a user first
             UserRegistrationRequest registrationRequest = new UserRegistrationRequest(
                     "testuser123",
                     "CorrectPassword123!",
@@ -104,7 +101,6 @@ class AuthIntegrationTest {
                     .content(objectMapper.writeValueAsString(registrationRequest)))
                     .andExpect(status().isCreated());
 
-            // Try to login with wrong password
             AuthRequest wrongPasswordRequest = new AuthRequest(
                     "testuser123",
                     "WrongPassword123!"
@@ -139,13 +135,11 @@ class AuthIntegrationTest {
                     "USER"
             );
 
-            // First registration should succeed
             mockMvc.perform(post("/auth/register")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(registrationRequest)))
                     .andExpect(status().isCreated());
 
-            // Second registration with same username should fail
             mockMvc.perform(post("/auth/register")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(registrationRequest)))
@@ -205,7 +199,6 @@ class AuthIntegrationTest {
         @Test
         @DisplayName("Should handle multiple users independently")
         void testMultipleUsersIndependence() throws Exception {
-            // Register first user
             UserRegistrationRequest user1Request = new UserRegistrationRequest(
                     "user1",
                     "User1Password123!",
@@ -216,7 +209,6 @@ class AuthIntegrationTest {
                     .content(objectMapper.writeValueAsString(user1Request)))
                     .andExpect(status().isCreated());
 
-            // Register second user
             UserRegistrationRequest user2Request = new UserRegistrationRequest(
                     "user2",
                     "User2Password123!",
@@ -227,7 +219,6 @@ class AuthIntegrationTest {
                     .content(objectMapper.writeValueAsString(user2Request)))
                     .andExpect(status().isCreated());
 
-            // User 1 should be able to login with their password
             AuthRequest user1Login = new AuthRequest("user1", "User1Password123!");
             mockMvc.perform(post("/auth/login")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -235,7 +226,6 @@ class AuthIntegrationTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.token", notNullValue()));
 
-            // User 2 should be able to login with their password
             AuthRequest user2Login = new AuthRequest("user2", "User2Password123!");
             mockMvc.perform(post("/auth/login")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -243,7 +233,6 @@ class AuthIntegrationTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.token", notNullValue()));
 
-            // User 1 should not be able to login with User 2's password
             AuthRequest user1WithUser2Password = new AuthRequest("user1", "User2Password123!");
             mockMvc.perform(post("/auth/login")
                     .contentType(MediaType.APPLICATION_JSON)
