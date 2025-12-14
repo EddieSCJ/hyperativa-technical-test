@@ -52,5 +52,5 @@ aws:
   secret-key: test
   s3:
     bucket: test-bucket
-    presigned-url-expiration: 3600
+    presigned-url-expiration: 3600 # 1 Hour in seconds
 
