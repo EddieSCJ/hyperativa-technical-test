@@ -2,8 +2,8 @@ package com.hyperativatechtest.features.card.controller.batch;
 
 import com.hyperativatechtest.features.card.controller.batch.swagger.examples.BatchJobStatusExample;
 import com.hyperativatechtest.features.card.controller.batch.swagger.examples.UploadBatchFileExample;
-import com.hyperativatechtest.features.fileprocessing.dto.FileUploadResponse;
-import com.hyperativatechtest.features.fileprocessing.dto.JobStatusResponse;
+import com.hyperativatechtest.features.card.dto.batch.FileUploadResponse;
+import com.hyperativatechtest.features.card.dto.batch.JobStatusResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;

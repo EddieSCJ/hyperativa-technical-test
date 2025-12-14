@@ -1,8 +1,10 @@
 package com.hyperativatechtest.features.card.controller.batch;
 
-import com.hyperativatechtest.features.fileprocessing.dto.FileUploadResponse;
-import com.hyperativatechtest.features.fileprocessing.dto.JobStatusResponse;
-import com.hyperativatechtest.features.fileprocessing.service.FileUploadService;
+import com.hyperativatechtest.features.card.dto.batch.FileUploadResponse;
+import com.hyperativatechtest.features.card.dto.batch.JobStatusResponse;
+import com.hyperativatechtest.features.card.mapper.JobStatusMapper;
+import com.hyperativatechtest.features.card.service.CardBatchUploadService;
+import com.hyperativatechtest.features.card.service.CardFileProcessingJobService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +23,9 @@ import static java.util.Objects.nonNull;
 @Slf4j
 public class BatchCardController implements BatchCardControllerApi {
 
-    private final FileUploadService fileUploadService;
+    private final CardBatchUploadService cardBatchUploadService;
+    private final CardFileProcessingJobService cardFileProcessingJobService;
+    private final JobStatusMapper jobStatusMapper;
 
     @Override
     public ResponseEntity<FileUploadResponse> uploadCardsBatch(
@@ -41,15 +45,18 @@ public class BatchCardController implements BatchCardControllerApi {
             return validationError;
         }
 
-        FileUploadResponse response = fileUploadService.uploadFile(file);
+        FileUploadResponse response = cardBatchUploadService.uploadCardsBatch(file);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 
     @Override
     public ResponseEntity<JobStatusResponse> getBatchCardInsertionStatus(@PathVariable String jobId) {
         log.debug("Get batch insertion status for job: {}", jobId);
-        JobStatusResponse response = fileUploadService.getJobStatus(jobId);
-        return ResponseEntity.ok(response);
+
+        return cardFileProcessingJobService.getJobStatus(jobId)
+                .map(jobStatusMapper::toJobStatusResponse)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     private ResponseEntity<FileUploadResponse> validateFileFormat(MultipartFile file) {
@@ -63,4 +70,3 @@ public class BatchCardController implements BatchCardControllerApi {
         return null;
     }
 }
-
