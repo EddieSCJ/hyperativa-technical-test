@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hyperativatechtest.config.TestAwsConfig;
 import com.hyperativatechtest.config.TestRabbitMqConfig;
 import com.hyperativatechtest.features.auth.repository.UserRepository;
-import com.hyperativatechtest.features.card.dto.simple.CardLookupRequest;
 import com.hyperativatechtest.features.card.dto.simple.CardLookupResponse;
 import com.hyperativatechtest.features.card.dto.simple.CardRequest;
 import com.hyperativatechtest.features.card.dto.simple.CardResponse;
@@ -32,6 +31,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -146,12 +146,8 @@ class CardControllerTest {
                         .content(objectMapper.writeValueAsString(cardRequest)))
                 .andExpect(status().isCreated());
 
-        CardLookupRequest lookupRequest = new CardLookupRequest("4456897922969999");
-
-        MvcResult result = mockMvc.perform(post("/api/cards/lookup")
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(lookupRequest)))
+        MvcResult result = mockMvc.perform(get("/api/cards/lookup")
+                        .param("cardNumber", "4456897922969999"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.maskedCardNumber").exists())
@@ -167,12 +163,8 @@ class CardControllerTest {
     @WithMockUser(username = "cardtestuser", roles = "USER")
     @DisplayName("Should return not found for non-existing card")
     void shouldReturnNotFoundForNonExistingCard() throws Exception {
-        CardLookupRequest lookupRequest = new CardLookupRequest("1111111111111111");
-
-        mockMvc.perform(post("/api/cards/lookup")
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(lookupRequest)))
+        mockMvc.perform(get("/api/cards/lookup")
+                        .param("cardNumber", "1111111111111111"))
                 .andExpect(status().isNotFound());
     }
 
@@ -193,12 +185,8 @@ class CardControllerTest {
     @Test
     @DisplayName("Should require authentication for card lookup")
     void shouldRequireAuthenticationForCardLookup() throws Exception {
-        CardLookupRequest lookupRequest = new CardLookupRequest("4456897999999999");
-
-        mockMvc.perform(post("/api/cards/lookup")
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(lookupRequest)))
+        mockMvc.perform(get("/api/cards/lookup")
+                        .param("cardNumber", "4456897999999999"))
                 .andExpect(status().isForbidden());
     }
 
