@@ -18,6 +18,17 @@ spring:
   flyway:
     locations: classpath:db/migration,classpath:db/migration-local
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
 logging:
   level:
     root: INFO
@@ -40,4 +51,13 @@ jwt:
 
 encryption:
   secret: AES256SecretKeyForCardEncryption!
+
+aws:
+  region: us-east-1
+  endpoint: http://localhost:4566
+  access-key: test
+  secret-key: test
+  s3:
+    bucket: card-files-bucket
+    presigned-url-expiration: 3600
 

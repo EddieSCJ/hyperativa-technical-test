@@ -1,0 +1,56 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  h2:
+    console:
+      enabled: false
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  flyway:
+    locations: classpath:db/migration,classpath:db/migration-local
+
+  rabbitmq:
+    listener:
+      simple:
+        auto-startup: false
+
+logging:
+  level:
+    root: WARN
+    com.hyperativatechtest: DEBUG
+
+springdoc:
+  swagger-ui:
+    enabled: false
+
+jwt:
+  secret: testSecretKeyForJWTTokenGenerationMustBeAtLeast256BitsLong123456789
+  expiration: 86400000
+
+encryption:
+  secret: testAES256SecretKeyForCardEncryption!
+
+aws:
+  region: us-east-1
+  endpoint: http://localhost:4566
+  access-key: test
+  secret-key: test
+  s3:
+    bucket: test-bucket
+    presigned-url-expiration: 3600
+

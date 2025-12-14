@@ -5,6 +5,10 @@ spring:
   profiles:
     active: local
 
+  h2:
+    console:
+      enabled: true
+
   jpa:
     hibernate:
       naming:
@@ -21,4 +25,5 @@ encryption:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+    enabled: true
 
