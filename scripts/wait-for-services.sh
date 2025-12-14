@@ -37,8 +37,11 @@ check_service_health() {
                 fi
                 ;;
             "localstack")
-                # Use curl to check health endpoint
-                if curl -s http://localhost:$port/_localstack/health >/dev/null 2>&1; then
+                # Use curl with --insecure for HTTPS endpoint, or nc as fallback
+                if curl -sk https://localhost:$port/_localstack/health >/dev/null 2>&1; then
+                    echo " ✓"
+                    return 0
+                elif nc -z localhost $port >/dev/null 2>&1; then
                     echo " ✓"
                     return 0
                 fi
@@ -60,7 +63,7 @@ POSTGRES_OK=$?
 check_service_health "rabbitmq" "5672" 30
 RABBITMQ_OK=$?
 
-check_service_health "localstack" "4566" 30
+check_service_health "localstack" "4566" 60
 LOCALSTACK_OK=$?
 
 echo ""

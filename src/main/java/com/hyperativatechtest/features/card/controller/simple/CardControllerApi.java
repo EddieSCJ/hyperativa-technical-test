@@ -2,24 +2,28 @@ package com.hyperativatechtest.features.card.controller.simple;
 
 import com.hyperativatechtest.features.card.controller.simple.swagger.examples.CreateCardExample;
 import com.hyperativatechtest.features.card.controller.simple.swagger.examples.LookupCardExample;
-import com.hyperativatechtest.features.card.dto.simple.CardLookupRequest;
 import com.hyperativatechtest.features.card.dto.simple.CardLookupResponse;
 import com.hyperativatechtest.features.card.dto.simple.CardRequest;
 import com.hyperativatechtest.features.card.dto.simple.CardResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/api/cards")
+@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Cards", description = "Individual card management - create and lookup single cards")
 public interface CardControllerApi {
 
@@ -87,15 +91,13 @@ public interface CardControllerApi {
     })
     ResponseEntity<CardResponse> createCard(@Valid @RequestBody CardRequest request);
 
-    @PostMapping("/lookup")
+    @GetMapping("/lookup")
     @Operation(summary = "Lookup a card", description = "Check if a card exists and get its unique identifier")
-    @RequestBody(
+    @Parameter(
+        name = "cardNumber",
+        description = "The card number to lookup",
         required = true,
-        content = @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = CardLookupRequest.class),
-            examples = @ExampleObject(value = LookupCardExample.REQUEST)
-        )
+        example = "4456897999999999"
     )
     @ApiResponses({
         @ApiResponse(
@@ -128,5 +130,5 @@ public interface CardControllerApi {
             description = "Card not found"
         )
     })
-    ResponseEntity<CardLookupResponse> lookupCard(@RequestBody CardLookupRequest request);
+    ResponseEntity<CardLookupResponse> lookupCard(@RequestParam String cardNumber);
 }

@@ -26,14 +26,17 @@ services:
       - SERVICES=s3,dynamodb
       - PERSISTENCE=1
       - DEBUG=0
+      - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
       - localstack_data:/var/lib/localstack
       - ./scripts/localstack-init.sh:/etc/localstack/init/ready.d/init-aws.sh
+      - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      test: ["CMD", "python", "-c", "import boto3; boto3.client('s3', endpoint_url='http://localhost:4566', region_name='us-east-1', aws_access_key_id='test', aws_secret_access_key='test').list_buckets()"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 15s
 
   rabbitmq:
     image: rabbitmq:3.12-management-alpine

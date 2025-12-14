@@ -1,6 +1,5 @@
 package com.hyperativatechtest.features.card.controller.simple;
 
-import com.hyperativatechtest.features.card.dto.simple.CardLookupRequest;
 import com.hyperativatechtest.features.card.dto.simple.CardLookupResponse;
 import com.hyperativatechtest.features.card.dto.simple.CardRequest;
 import com.hyperativatechtest.features.card.dto.simple.CardResponse;
@@ -28,9 +27,9 @@ public class CardController implements CardControllerApi {
     }
 
     @Override
-    public ResponseEntity<CardLookupResponse> lookupCard(@RequestBody CardLookupRequest request) {
-        log.debug("Lookup card request");
-        CardLookupResponse response = cardService.lookupCard(request.getCardNumber());
+    public ResponseEntity<CardLookupResponse> lookupCard(String cardNumber) {
+        log.debug("Lookup card request for card: {}", cardNumber);
+        CardLookupResponse response = cardService.lookupCard(cardNumber);
         return ResponseEntity.ok(response);
     }
 }
