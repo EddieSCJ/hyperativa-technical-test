@@ -105,9 +105,9 @@ class StrongPasswordValidatorTest {
     class NullPasswordTests {
 
         @Test
-        @DisplayName("Should return true for null password (handled by @NotBlank)")
+        @DisplayName("Should return false for null password")
         void testNullPassword() {
-            assertTrue(validator.isValid(null, null));
+            assertFalse(validator.isValid(null, null));
         }
     }
 }

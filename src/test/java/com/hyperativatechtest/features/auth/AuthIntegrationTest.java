@@ -41,9 +41,7 @@ class AuthIntegrationTest {
     private RoleRepository roleRepository;
 
     @BeforeEach
-    void setUp() {
-        // No setup needed - each test uses unique usernames
-    }
+    void setUp() {}
 
     @Nested
     @DisplayName("User Registration and Login Flow")

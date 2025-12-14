@@ -70,8 +70,8 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
-        if (password == null) {
-            return true; // @NotBlank annotation will handle it
+        if (isPasswordNull(password, context)) {
+            return false;
         }
 
         boolean isValid = pattern.matcher(password).matches();
@@ -84,6 +84,19 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
         }
 
         return isValid;
+    }
+
+    private boolean isPasswordNull(String password, ConstraintValidatorContext context) {
+        if (password == null) {
+            if (context != null) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(
+                        "Password cannot be null"
+                ).addConstraintViolation();
+            }
+            return true;
+        }
+        return false;
     }
 }
 
